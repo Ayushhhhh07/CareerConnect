@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - CareerConnect</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f6fb;
+            color: #243047;
+        }
+
+        header {
+            background: #172b4d;
+            color: white;
+            padding: 22px 30px;
+        }
+
+        header h1 {
+            margin: 0 0 6px;
+        }
+
+        header p {
+            margin: 0;
+            color: #dbeafe;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+            border-top: 4px solid #64748b;
+        }
+
+        .card h2 {
+            margin: 0 0 15px;
+            font-size: 15px;
+            color: #64748b;
+        }
+
+        .number {
+            font-size: 34px;
+            font-weight: bold;
+        }
+
+        .total { border-top-color: #2563eb; }
+        .pending { border-top-color: #d97706; }
+        .review { border-top-color: #7c3aed; }
+        .shortlisted { border-top-color: #059669; }
+        .rejected { border-top-color: #dc2626; }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 18px;
+            border-radius: 7px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
+        .secondary {
+            background: #334155;
+        }
+
+        .secondary:hover {
+            background: #1e293b;
+        }
+
+        .note {
+            margin-top: 24px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        @media (max-width: 500px) {
+            header {
+                padding: 20px;
+            }
+
+            .container {
+                margin-top: 20px;
+                padding: 0 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>CareerConnect</h1>
+    <p>Administrator Dashboard</p>
+</header>
+
+<main class="container">
+
+    <h2>Application Overview</h2>
+    <p>View application statistics and manage student applications.</p>
+
+    <section class="cards">
+
+        <article class="card total">
+            <h2>Total Applications</h2>
+            <div class="number" th:text="${totalApplications}">0</div>
+        </article>
+
+        <article class="card pending">
+            <h2>Pending</h2>
+            <div class="number" th:text="${pendingApplications}">0</div>
+        </article>
+
+        <article class="card review">
+            <h2>Under Review</h2>
+            <div class="number" th:text="${underReviewApplications}">0</div>
+        </article>
+
+        <article class="card shortlisted">
+            <h2>Shortlisted</h2>
+            <div class="number" th:text="${shortlistedApplications}">0</div>
+        </article>
+
+        <article class="card rejected">
+            <h2>Rejected</h2>
+            <div class="number" th:text="${rejectedApplications}">0</div>
+        </article>
+
+    </section>
+
+    <section class="actions">
+        <a class="btn" th:href="@{/admin/applications}">
+            Manage Applications
+        </a>
+
+        <a class="btn secondary" th:href="@{/dashboard}">
+            Main Dashboard
+        </a>
+    </section>
+
+    <p class="note">
+        Statistics are calculated from the current application records.
+    </p>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Applications - CareerConnect</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 25px;
+            color: #1e293b;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: #243b55;
+        }
+
+        .notifications {
+            background: white;
+            padding: 22px;
+            margin: 22px 0;
+            border-radius: 12px;
+            border-left: 5px solid #2563eb;
+            box-shadow: 0 2px 8px #ddd;
+        }
+
+        .notifications h2 {
+            margin-top: 0;
+            color: #1d4ed8;
+        }
+
+        .notification {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            padding: 14px;
+            margin: 12px 0;
+            border-radius: 8px;
+            line-height: 1.5;
+        }
+
+        .no-notifications {
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .application {
+            background: white;
+            padding: 20px;
+            margin: 18px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #ddd;
+            overflow-wrap: anywhere;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .pending {
+            background: #fff0c2;
+            color: #805b00;
+        }
+
+        .under-review {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .shortlisted {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Application tracking timeline */
+        .timeline {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 10px;
+        }
+
+        .timeline h3 {
+            margin-top: 0;
+            color: #243b55;
+        }
+
+        .timeline-step {
+            position: relative;
+            display: flex;
+            gap: 14px;
+            padding-bottom: 24px;
+        }
+
+        .timeline-step:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-marker {
+            width: 24px;
+            height: 24px;
+            flex: 0 0 24px;
+            border-radius: 50%;
+            background: #cbd5e1;
+            border: 3px solid #e2e8f0;
+            z-index: 1;
+        }
+
+        .timeline-step:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            left: 10px;
+            top: 24px;
+            bottom: 0;
+            width: 3px;
+            background: #e2e8f0;
+        }
+
+        .timeline-step.completed .timeline-marker {
+            background: #16a34a;
+            border-color: #bbf7d0;
+        }
+
+        .timeline-step.current .timeline-marker {
+            background: #2563eb;
+            border-color: #bfdbfe;
+        }
+
+        .timeline-step.rejected-step .timeline-marker {
+            background: #dc2626;
+            border-color: #fecaca;
+        }
+
+        .timeline-text {
+            flex: 1;
+            line-height: 1.5;
+        }
+
+        .timeline-text strong {
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .timeline-text p {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 15px;
+            margin-right: 18px;
+            color: #243b55;
+        }
+
+        .empty {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+
+            .application,
+            .notifications {
+                padding: 16px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>My Applications</h1>
+
+    <p>
+        Welcome,
+        <strong th:text="${studentName}">Student</strong>
+    </p>
+
+    <!-- Application status notifications -->
+    <section class="notifications">
+        <h2>🔔 Application Notifications</h2>
+
+        <div th:if="${#lists.isEmpty(notifications)}"
+             class="no-notifications">
+            You have no new status updates. Notifications will appear
+            here when your applications receive a status update.
+        </div>
+
+        <div th:each="notification : ${notifications}"
+             class="notification"
+             th:text="${notification}">
+            Your application status has been updated.
+        </div>
+    </section>
+
+    <p class="empty" th:if="${#lists.isEmpty(applications)}">
+        You have not submitted any internship applications yet.
+        <a th:href="@{/}">Browse internships</a>
+    </p>
+
+    <!-- Application cards and timeline -->
+    <div th:each="app : ${applications}" class="application">
+
+        <h2 th:text="${app.internshipTitle}">Internship Title</h2>
+
+        <p>
+            <strong>Application ID:</strong>
+            <span th:text="${app.id}">1</span>
+        </p>
+
+        <p>
+            <strong>Applicant:</strong>
+            <span th:text="${app.applicantName}">Student</span>
+        </p>
+
+        <p>
+            <strong>Email:</strong>
+            <span th:text="${app.email}">student@example.com</span>
+        </p>
+
+        <p>
+            <strong>Phone:</strong>
+            <span th:text="${app.phone}">1234567890</span>
+        </p>
+
+        <p><strong>Current Status:</strong></p>
+
+        <span class="status"
+              th:classappend="${app.status == 'Pending' ? ' pending' : (app.status == 'Under Review' ? ' under-review' : (app.status == 'Shortlisted' ? ' shortlisted' : (app.status == 'Rejected' ? ' rejected' : '')))}"
+              th:text="${app.status}">
+            Pending
+        </span>
+
+        <!-- Tracking timeline -->
+        <section class="timeline">
+            <h3>Application Tracking</h3>
+
+            <div class="timeline-step completed">
+                <div class="timeline-marker"></div>
+                <div class="timeline-text">
+                    <strong>Application Submitted</strong>
+                    <p>Your application has been recorded.</p>
+                </div>
+            </div>
+
+            <div class="timeline-step"
+                 th:classappend="${app.status == 'Pending' ? ' current' : (app.status == 'Rejected' ? '' : ' completed')}">
+                <div class="timeline-marker"></div>
+                <div class="timeline-text">
+                    <strong>Application Review</strong>
+                    <p th:if="${app.status == 'Pending'}">
+                        Waiting for the admin to review your application.
+                    </p>
+                    <p th:if="${app.status != 'Pending'}">
+                        Your application has moved beyond the pending stage.
+                    </p>
+                </div>
+            </div>
+
+            <div class="timeline-step"
+                 th:classappend="${app.status == 'Under Review' ? ' current' : (app.status == 'Shortlisted' ? ' completed' : (app.status == 'Rejected' ? ' rejected-step' : ''))}">
+                <div class="timeline-marker"></div>
+                <div class="timeline-text">
+                    <strong>Selection Decision</strong>
+                    <p th:if="${app.status == 'Under Review'}">
+                        Your application is being reviewed.
+                    </p>
+                    <p th:if="${app.status == 'Shortlisted'}">
+                        Congratulations! You have been shortlisted.
+                    </p>
+                    <p th:if="${app.status == 'Rejected'}">
+                        This application was not selected.
+                    </p>
+                    <p th:if="${app.status == 'Pending'}">
+                        A decision has not been made yet.
+                    </p>
+                </div>
+            </div>
+
+            <p th:if="${app.status == 'Shortlisted'}">
+                <strong>Next step:</strong> Check your email for any
+                instructions from the recruiter.
+            </p>
+        </section>
+
+    </div>
+
+    <a class="back" th:href="@{/dashboard}">
+        Back to Dashboard
+    </a>
+
+    <a class="back" th:href="@{/}">
+        Browse Internships
+    </a>
+
+</div>
+</body>
+</html>

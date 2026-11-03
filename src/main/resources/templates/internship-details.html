@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internship Details | CareerConnect</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            margin: 0;
+            color: #172554;
+        }
+
+        nav {
+            background: #142b55;
+            color: white;
+            padding: 20px 8%;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 750px;
+            margin: 45px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        h1 { color: #2563eb; }
+
+        .detail {
+            padding: 14px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 20px;
+            margin-top: 20px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+        }
+
+        .back {
+            background: #142b55;
+            margin-left: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #142b55;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav>
+    <h2>CareerConnect</h2>
+    <a th:href="@{/}">← Back to Home</a>
+</nav>
+
+<div class="container">
+
+    <h1 th:text="${internship.title}">Internship Title</h1>
+
+    <div class="detail">
+        <strong>Company:</strong>
+        <span th:text="${internship.company}">Company</span>
+    </div>
+
+    <div class="detail">
+        <strong>Skills:</strong>
+        <span th:text="${internship.skills}">Skills</span>
+    </div>
+
+    <div class="detail">
+        <strong>Location:</strong>
+        <span th:text="${internship.location}">Location</span>
+    </div>
+
+    <div class="detail">
+        <strong>Stipend:</strong>
+        <span th:text="${internship.stipend}">Stipend</span>
+    </div>
+
+    <a class="button"
+       th:href="@{/apply(title=${internship.title})}">
+        Apply Now
+    </a>
+
+    <a class="button back" th:href="@{/}">
+        Back to Internships
+    </a>
+
+</div>
+
+<footer>
+    CareerConnect | Online Internship &amp; Placement Portal
+</footer>
+
+</body>
+</html>

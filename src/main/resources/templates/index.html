@@ -1,0 +1,332 @@
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerConnect | Internship Portal</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #172554;
+        }
+
+        nav {
+            background: #142b55;
+            color: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        nav h2 { margin: 0; }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 16px;
+        }
+
+        .hero {
+            padding: 65px 20px;
+            text-align: center;
+            background: linear-gradient(135deg, #dbeafe, #eff6ff);
+        }
+
+        .hero h1 { font-size: 38px; margin: 0 0 14px; }
+        .hero p { color: #475569; font-size: 18px; }
+
+        .button {
+            display: inline-block;
+            padding: 12px 20px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+            margin-top: 10px;
+        }
+
+        #jobs { padding: 40px 7%; }
+
+        #jobs h2, #about h2 { text-align: center; }
+
+        .filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 12px;
+            margin: 25px 0 15px;
+        }
+
+        .filters input, .filters select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            background: white;
+            font-size: 15px;
+        }
+
+        .filter-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .reset-button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 7px;
+            background: #e2e8f0;
+            cursor: pointer;
+        }
+
+        .jobs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 22px;
+        }
+
+        .card {
+            background: white;
+            padding: 23px;
+            border-radius: 12px;
+            border-top: 4px solid #2563eb;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, .08);
+            overflow-wrap: anywhere;
+        }
+
+        .card h3 { color: #1d4ed8; margin-top: 0; }
+        .card p { color: #475569; line-height: 1.5; }
+
+        .card-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .action-button {
+            display: inline-block;
+            padding: 10px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: white;
+            background: #142b55;
+        }
+
+        .details-button { background: #2563eb; }
+        .action-button:hover { opacity: .85; }
+
+        #noResults {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #about {
+            text-align: center;
+            padding: 30px 7%;
+        }
+
+        footer {
+            background: #142b55;
+            color: white;
+            text-align: center;
+            padding: 22px;
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 29px; }
+            nav { padding: 18px 5%; }
+            nav a { margin: 0 10px 0 0; }
+            #jobs { padding: 30px 5%; }
+        }
+    </style>
+</head>
+
+<body>
+<nav>
+    <h2>CareerConnect</h2>
+    <div>
+        <a th:href="@{/}">Home</a>
+        <a href="#jobs">Internships</a>
+        <a href="#about">About</a>
+        <a th:href="@{/dashboard}">Dashboard</a>
+    </div>
+</nav>
+
+<section class="hero">
+    <h1>Build Your Career with CareerConnect</h1>
+    <p>Discover internships and take your first step toward your professional future.</p>
+    <a class="button" href="#jobs">Explore Internships</a>
+</section>
+
+<section id="jobs">
+    <h2>Explore Internship Opportunities</h2>
+
+    <div class="filters">
+        <input type="search" id="searchInput"
+               placeholder="Search role, company or skill..."
+               aria-label="Search internships">
+
+        <select id="locationFilter" aria-label="Filter by location">
+            <option value="">All locations</option>
+        </select>
+
+        <select id="stipendFilter" aria-label="Filter by stipend">
+            <option value="">All stipends</option>
+            <option value="paid">Paid internships</option>
+            <option value="unpaid">Unpaid / not specified</option>
+        </select>
+    </div>
+
+    <div class="filter-actions">
+        <span id="resultCount" aria-live="polite">Loading internships...</span>
+        <button type="button" class="reset-button" id="resetFilters">
+            Clear Filters
+        </button>
+    </div>
+
+    <div class="jobs">
+        <div class="card" th:each="internship : ${internships}">
+            <h3 class="internship-title" th:text="${internship.title}">
+                Internship Title
+            </h3>
+
+            <p>
+                <strong>Company:</strong>
+                <span class="company" th:text="${internship.company}">Company</span>
+            </p>
+
+            <p>
+                <strong>Skills:</strong>
+                <span class="skills" th:text="${internship.skills}">Skills</span>
+            </p>
+
+            <p>
+                <strong>Location:</strong>
+                <span class="location" th:text="${internship.location}">Location</span>
+            </p>
+
+            <p>
+                <strong>Stipend:</strong>
+                <span class="stipend" th:text="${internship.stipend}">Stipend</span>
+            </p>
+
+            <div class="card-actions">
+                <a class="action-button details-button"
+                   th:href="@{/internship-details(title=${internship.title})}">
+                    View Details
+                </a>
+
+                <a class="action-button"
+                   th:href="@{/apply(title=${internship.title})}">
+                    Apply
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <p id="noResults">
+        No internships match your filters. Try another search.
+    </p>
+</section>
+
+<section id="about">
+    <h2>About CareerConnect</h2>
+    <p>A student-focused portal to explore internship and placement opportunities.</p>
+</section>
+
+<footer>
+    <p>&copy; 2026 CareerConnect | Online Internship &amp; Placement Portal</p>
+</footer>
+
+<script>
+    const searchInput = document.getElementById("searchInput");
+    const locationFilter = document.getElementById("locationFilter");
+    const stipendFilter = document.getElementById("stipendFilter");
+    const resetButton = document.getElementById("resetFilters");
+    const noResults = document.getElementById("noResults");
+    const resultCount = document.getElementById("resultCount");
+    const cards = Array.from(document.querySelectorAll(".card"));
+
+    const locations = [...new Set(
+        cards.map(card =>
+            card.querySelector(".location").textContent.trim()
+        ).filter(Boolean)
+    )].sort((a, b) => a.localeCompare(b));
+
+    locations.forEach(location => {
+        const option = document.createElement("option");
+        option.value = location.toLowerCase();
+        option.textContent = location;
+        locationFilter.appendChild(option);
+    });
+
+    function filterInternships() {
+        const query = searchInput.value.toLowerCase().trim();
+        const selectedLocation = locationFilter.value;
+        const selectedStipend = stipendFilter.value;
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            const title = card.querySelector(".internship-title").textContent;
+            const company = card.querySelector(".company").textContent;
+            const skills = card.querySelector(".skills").textContent;
+            const location = card.querySelector(".location").textContent.trim();
+            const stipend = card.querySelector(".stipend").textContent.trim();
+
+            const searchableText =
+                `${title} ${company} ${skills} ${location}`.toLowerCase();
+
+            const matchesSearch = searchableText.includes(query);
+            const matchesLocation = !selectedLocation ||
+                location.toLowerCase() === selectedLocation;
+
+            const hasPaidAmount = /\d/.test(stipend) &&
+                !/unpaid|not specified|n\/a|none/i.test(stipend);
+
+            const matchesStipend = !selectedStipend ||
+                (selectedStipend === "paid" && hasPaidAmount) ||
+                (selectedStipend === "unpaid" && !hasPaidAmount);
+
+            const visible =
+                matchesSearch && matchesLocation && matchesStipend;
+
+            card.style.display = visible ? "" : "none";
+            if (visible) visibleCount++;
+        });
+
+        resultCount.textContent = visibleCount +
+            (visibleCount === 1 ? " internship found" : " internships found");
+
+        noResults.style.display = visibleCount === 0 ? "block" : "none";
+    }
+
+    searchInput.addEventListener("input", filterInternships);
+    locationFilter.addEventListener("change", filterInternships);
+    stipendFilter.addEventListener("change", filterInternships);
+
+    resetButton.addEventListener("click", () => {
+        searchInput.value = "";
+        locationFilter.value = "";
+        stipendFilter.value = "";
+        filterInternships();
+    });
+
+    filterInternships();
+</script>
+</body>
+</html>
+```

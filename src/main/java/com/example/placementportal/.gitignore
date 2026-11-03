@@ -1,0 +1,24 @@
+
+# Java and Maven
+target/
+*.class
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# Keep database passwords private
+/src/main/resources/application.properties
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Local diagnostic files
+classpath.txt
+startup-error.txt
+
+# Windows files
+Thumbs.db

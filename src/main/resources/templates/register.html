@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration | CareerConnect</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 25px 15px;
+            font-family: Arial, sans-serif;
+            background: #f3f6fc;
+        }
+
+        .container {
+            max-width: 430px;
+            margin: 35px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 5px 22px #00000012;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2449b5;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin: 17px 0 7px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 24px;
+            padding: 13px;
+            border: none;
+            border-radius: 7px;
+            background: #2449b5;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #19378e;
+        }
+
+        .message {
+            padding: 10px;
+            border-radius: 6px;
+            background: #ffe9e9;
+            color: #a00000;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #555;
+        }
+
+        a {
+            color: #2449b5;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>CareerConnect</h1>
+    <p class="subtitle">Create your student account</p>
+
+    <p class="message"
+       th:if="${error}"
+       th:text="${error}"></p>
+
+    <form th:action="@{/register}"
+          th:object="${student}"
+          method="post">
+
+        <label for="fullName">Full Name</label>
+        <input id="fullName"
+               type="text"
+               th:field="*{fullName}"
+               autocomplete="name"
+               required
+               minlength="2"
+               maxlength="100">
+
+        <label for="email">Email Address</label>
+        <input id="email"
+               type="email"
+               th:field="*{email}"
+               autocomplete="email"
+               required
+               maxlength="254">
+
+        <label for="password">Password</label>
+        <input id="password"
+               type="password"
+               th:field="*{password}"
+               autocomplete="new-password"
+               required
+               minlength="8"
+               maxlength="72">
+
+        <button type="submit">Create Account</button>
+    </form>
+
+    <p class="footer">
+        Already registered?
+        <a th:href="@{/login}">Login here</a>
+    </p>
+
+    <p class="footer">
+        <a th:href="@{/}">Back to Home</a>
+    </p>
+
+</div>
+</body>
+</html>

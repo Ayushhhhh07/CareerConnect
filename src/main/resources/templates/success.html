@@ -1,0 +1,14 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Submitted | CareerConnect</title>
+</head>
+<body style="font-family: Arial; text-align: center; padding: 60px 15px;">
+    <h1>Application Submitted!</h1>
+    <p th:text="${message}">Your application was submitted successfully.</p>
+    <a th:href="@{/}">Back to Home</a>
+</body>
+</html>

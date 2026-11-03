@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Dashboard | CareerConnect</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6fb;
+            color: #222;
+        }
+
+        header {
+            background: #2449b5;
+            color: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        header h2 {
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .welcome-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+        }
+
+        h1 {
+            color: #1f326b;
+            margin-top: 0;
+        }
+
+        .email {
+            color: #555;
+            overflow-wrap: anywhere;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+        }
+
+        .feature-card h3 {
+            color: #2449b5;
+            margin-top: 0;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 11px 17px;
+            background: #2449b5;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn:hover {
+            background: #19378f;
+        }
+
+        .logout-btn {
+            background: white;
+            color: #2449b5;
+        }
+
+        .logout-btn:hover {
+            background: #e8edff;
+        }
+
+        footer {
+            text-align: center;
+            color: #777;
+            padding: 25px 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h2>CareerConnect</h2>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="btn logout-btn">
+            Logout
+        </button>
+    </form>
+</header>
+
+<main class="container">
+
+    <section class="welcome-card">
+        <h1>Welcome to CareerConnect!</h1>
+
+        <p>
+            You are successfully logged in.
+        </p>
+
+        <p class="email">
+            Registered email:
+            <strong th:text="${studentEmail}">student@example.com</strong>
+        </p>
+    </section>
+
+    <section class="dashboard-grid">
+
+        <article class="feature-card">
+            <h3>Explore Internships</h3>
+            <p>
+                Discover available internships and find opportunities
+                that match your skills and interests.
+            </p>
+
+            <a th:href="@{/}" class="btn">
+                Browse Internships<a th:href="@{/my-applications}" class="btn">
+    View My Applications
+</a>
+<form th:action="@{/logout}" method="post">
+    <button type="submit" class="btn">Logout</button>
+</form>
+            </a><a th:href="@{/profile}" class="btn">
+    My Profile
+</a>
+        </article>
+
+        <article class="feature-card">
+            <h3>My Applications</h3>
+            <p>
+                View the internships you've applied for and check
+                the current status of your applications.
+            </p>
+
+            <a th:href="@{/my-applications}" class="btn">
+                View My Applications
+            </a>
+        </article>
+
+    </section>
+
+</main>
+
+<footer>
+    © 2026 CareerConnect | Placement and Internship Portal
+</footer>
+
+</body>
+</html>
